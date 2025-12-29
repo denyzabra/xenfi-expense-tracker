@@ -1,0 +1,7 @@
+{
+  "name": "XenFi Expense & Accounting Management",
+  "description": "A high-performance expense tracker and accounting dashboard with real-time financial insights powered by AI.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
