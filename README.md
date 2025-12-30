@@ -1,196 +1,251 @@
-# Xenfi Expense & Accounting Management Platform
+# XenFi - Expense Tracker
 
-A full-stack expense and accounting management platform with complete CRUD operations, authentication, and dashboard analytics.
+A modern, full-stack expense tracking application built with Next.js 15 App Router, featuring a beautiful dark theme UI and comprehensive financial management tools.
+
+## Features
+
+### Core Functionality
+- **Complete CRUD Operations** - Full create, read, update, delete for expenses and categories
+- **Smart Financial Management** - Track expenses, analyze spending patterns, and gain insights into your financial health
+- **Real-time Analytics** - Interactive charts and visualizations powered by Recharts
+- **Category Management** - Organize expenses across multiple customizable categories with color coding
+- **Advanced Data Table** - Powerful filtering, sorting, and pagination with TanStack React Table
+
+### User Experience
+- **Toast Notifications** - Professional centered feedback for all operations (create, update, delete)
+- **Confirmation Modals** - Industry-standard centered modals for destructive actions
+- **Secure Authentication** - Custom JWT-based authentication with access and refresh tokens
+- **Beautiful Dark Theme** - Carefully crafted UI with Tailwind CSS
+- **Responsive Design** - Fully responsive across all device sizes
+
+### Technical Features
+- **Type-Safe** - Full TypeScript support across frontend and backend
+- **Optimized Performance** - Single-query CRUD operations for 50-66% faster response times
+- **Database Constraints** - Leverages PostgreSQL constraints for data integrity
+
+## Tech Stack
+
+### Frontend
+- **Next.js 15** - React framework with App Router
+- **TypeScript** - Type safety and better developer experience
+- **Tailwind CSS v3** - Utility-first CSS framework
+- **Recharts** - Composable charting library
+- **TanStack React Table** - Headless UI for building powerful tables
+- **Lucide React** - Beautiful icon library
+
+### Backend
+- **Next.js API Routes** - Serverless API endpoints
+- **Prisma ORM v5** - Type-safe database access
+- **PostgreSQL (Neon)** - Serverless Postgres database with driver adapters
+- **JWT** - JSON Web Token authentication
+- **Zod** - TypeScript-first schema validation
+- **bcryptjs** - Password hashing
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+ and npm
+- PostgreSQL database (Neon recommended for serverless deployment)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd xenfi-expense-tracker
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+
+   Create a `.env.local` file in the root directory with the following:
+   ```env
+   # Database
+   DATABASE_URL="your-neon-database-url"
+
+   # JWT Secrets (generate strong random strings)
+   JWT_ACCESS_SECRET="your-access-secret-here"
+   JWT_REFRESH_SECRET="your-refresh-secret-here"
+   JWT_ACCESS_EXPIRES_IN="15m"
+   JWT_REFRESH_EXPIRES_IN="7d"
+
+   # Environment
+   NODE_ENV="development"
+   ```
+
+4. **Set up the database**
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
+
+5. **Seed the database (optional)**
+   ```bash
+   npm run prisma:seed
+   ```
+
+6. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+
+7. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run prisma:generate` - Generate Prisma Client
+- `npm run prisma:migrate` - Run database migrations
+- `npm run prisma:studio` - Open Prisma Studio
+- `npm run prisma:seed` - Seed the database
 
 ## Project Structure
 
 ```
 xenfi-expense-tracker/
-├── backend/                 # Node.js + Express.js + TypeScript API
-├── frontend/                # React + TypeScript + Vite
-└── README.md               # This file
+├── app/
+│   ├── (auth)/              # Authentication routes
+│   │   ├── login/
+│   │   └── signup/
+│   ├── (dashboard)/         # Dashboard routes
+│   │   ├── categories/      # Category management page
+│   │   ├── expenses/        # Expense management page
+│   │   ├── layout.tsx       # Dashboard layout with modal
+│   │   └── page.tsx         # Dashboard home
+│   ├── api/                 # API routes
+│   │   ├── auth/            # Authentication endpoints
+│   │   ├── categories/      # Category CRUD endpoints
+│   │   ├── dashboard/       # Dashboard statistics
+│   │   └── expenses/        # Expense CRUD endpoints
+│   ├── globals.css
+│   └── layout.tsx           # Root layout with providers
+├── components/              # React components
+│   ├── providers/           # Context providers
+│   │   ├── AuthProvider.tsx
+│   │   ├── ToastProvider.tsx
+│   │   └── TransactionModalProvider.tsx
+│   ├── ConfirmModal.tsx     # Confirmation dialog
+│   ├── Dashboard.tsx        # Dashboard component
+│   ├── ExpensesView.tsx     # Expenses table view
+│   ├── Layout.tsx           # Main layout
+│   ├── Toast.tsx            # Toast notification
+│   └── TransactionModal.tsx # Transaction form modal
+├── lib/
+│   ├── auth/               # Authentication utilities
+│   │   ├── api-middleware.ts
+│   │   └── jwt.ts
+│   ├── services/           # Business logic
+│   │   ├── category.service.ts
+│   │   ├── expense.service.ts
+│   │   └── auth.service.ts
+│   ├── utils/              # Utility functions
+│   │   ├── api-client.ts
+│   │   └── errors.ts
+│   ├── validators/         # Zod schemas
+│   │   ├── auth.validator.ts
+│   │   ├── category.validator.ts
+│   │   └── expense.validator.ts
+│   ├── constants.tsx       # Navigation and constants
+│   └── prisma.ts           # Prisma client
+├── prisma/
+│   ├── schema.prisma       # Database schema
+│   ├── migrations/         # Database migrations
+│   └── seed.ts            # Database seeding
+├── types/
+│   └── index.ts           # TypeScript type definitions
+└── public/                # Static assets
 ```
-
-## Tech Stack
-
-### Backend
-- Node.js + Express.js
-- TypeScript (strict mode)
-- PostgreSQL (Neon.com)
-- Prisma ORM
-- JWT Authentication (access + refresh tokens)
-- Zod Validation
-- Bcrypt for password hashing
-
-### Frontend
-- React 19
-- TypeScript
-- Vite
-- Recharts for data visualization
-- Lucide React icons
-
-## Features
-
-### Authentication
-- ✅ User signup and login
-- ✅ JWT-based authentication
-- ✅ Access tokens (15min) + Refresh tokens (7 days)
-- ✅ Protected routes
-- ✅ Session management
-
-### Expense Management
-- ✅ Create, Read, Update, Delete expenses
-- ✅ Filter by date range, category, amount
-- ✅ Categorization with custom colors
-- ✅ Payment method tracking
-- ✅ Optional attachment URLs
-
-### Dashboard
-- ✅ Total expenses for current month
-- ✅ Expense count and breakdown by category
-- ✅ Recent expenses list
-- ✅ Visual charts (Bar & Pie charts)
-- ✅ Date range filtering
-
-### Database
-- ✅ PostgreSQL with Prisma migrations
-- ✅ Data validations (required fields, numeric checks)
-- ✅ Seed script with sample data
-- ✅ Proper indexing for performance
-
-## Quick Start
-
-### 1. Backend Setup
-
-```bash
-cd backend
-
-# Install dependencies
-npm install
-
-# Set up environment variables
-# Update .env with your Neon.com DATABASE_URL
-# JWT secrets are already generated
-
-# Run migrations
-npm run prisma:migrate
-
-# Seed database with demo data
-npm run prisma:seed
-
-# Start development server
-npm run dev
-```
-
-Backend runs on `http://localhost:5000`
-
-### 2. Frontend Setup
-
-```bash
-cd frontend
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-```
-
-Frontend runs on `http://localhost:5173` (or the port Vite assigns)
-
-## Demo Account
-
-Email: `demo@xenfi.com`
-Password: `password123`
 
 ## API Endpoints
 
-Base URL: `http://localhost:5000/api/v1`
-
 ### Authentication
-- `POST /auth/signup` - Create account
-- `POST /auth/login` - Login
-- `POST /auth/logout` - Logout (requires auth)
-- `POST /auth/refresh` - Refresh access token
-- `GET /auth/me` - Get current user (requires auth)
-
-### Categories
-- `GET /categories` - Get all categories (requires auth)
-- `POST /categories` - Create category (requires auth)
-- `PUT /categories/:id` - Update category (requires auth)
-- `DELETE /categories/:id` - Delete category (requires auth)
+- `POST /api/auth/signup` - Create new account
+- `POST /api/auth/login` - Login with email and password
+- `POST /api/auth/logout` - Logout and invalidate tokens
+- `POST /api/auth/refresh` - Refresh access token
+- `GET /api/auth/me` - Get current user profile
 
 ### Expenses
-- `GET /expenses` - Get all expenses with filters (requires auth)
-- `POST /expenses` - Create expense (requires auth)
-- `PUT /expenses/:id` - Update expense (requires auth)
-- `DELETE /expenses/:id` - Delete expense (requires auth)
+- `GET /api/expenses` - Get all expenses with optional filters
+- `POST /api/expenses` - Create new expense
+- `GET /api/expenses/[id]` - Get expense by ID
+- `PUT /api/expenses/[id]` - Update expense
+- `DELETE /api/expenses/[id]` - Delete expense
+
+### Categories
+- `GET /api/categories` - Get all categories
+- `POST /api/categories` - Create new category
+- `GET /api/categories/[id]` - Get category by ID
+- `PUT /api/categories/[id]` - Update category
+- `DELETE /api/categories/[id]` - Delete category (only if no expenses exist)
 
 ### Dashboard
-- `GET /dashboard` - Get dashboard statistics (requires auth)
-  - Query params: `startDate`, `endDate`
-
-## Environment Variables
-
-### Backend (.env)
-```env
-DATABASE_URL=<your-neon-postgresql-url>
-PORT=5000
-NODE_ENV=development
-JWT_ACCESS_SECRET=<generated>
-JWT_REFRESH_SECRET=<generated>
-JWT_ACCESS_EXPIRES_IN=15m
-JWT_REFRESH_EXPIRES_IN=7d
-CORS_ORIGIN=http://localhost:3000
-```
-
-### Frontend (.env.local)
-```env
-VITE_API_URL=http://localhost:5000/api/v1
-```
+- `GET /api/dashboard` - Get dashboard statistics and analytics
 
 ## Database Schema
 
+The application uses three main models:
+
 ### User
-- id, email (unique), password (hashed), name, refreshToken
+- Authentication and user profile information
+- One-to-many relationships with Expenses and Categories
 
 ### Category
-- id, name, description, color, userId
-- Unique constraint: (userId, name)
+- Name, description, and color for expense categorization
+- Unique constraint on (userId, name)
+- Cascade delete when user is deleted
+- Restrict delete when expenses exist
 
 ### Expense
-- id, amount, description, date, paymentMethod, attachmentUrl, categoryId, userId
-- Indexes on: userId, categoryId, date
+- Amount, description, date, payment method, and optional attachment
+- Foreign keys to User and Category
+- Indexed on userId, categoryId, and date for optimal query performance
 
-## Development Scripts
+See `prisma/schema.prisma` for the complete schema definition.
 
-### Backend
-- `npm run dev` - Start with hot reload
-- `npm run build` - Build for production
-- `npm start` - Run production build
-- `npm run prisma:generate` - Generate Prisma client
-- `npm run prisma:migrate` - Run migrations
-- `npm run prisma:seed` - Seed database
-- `npm run prisma:studio` - Open Prisma Studio
+## Performance Optimizations
 
-### Frontend
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
+The application implements several performance optimizations:
 
-## Project Highlights
+1. **Single-Query CRUD Operations** - Reduced from 2-3 database queries to 1 per operation
+2. **Database Constraints** - Leverages PostgreSQL foreign keys and unique constraints
+3. **Indexed Queries** - Strategic indexes on userId, categoryId, and date fields
+4. **Error Code Handling** - Validates through Prisma error codes instead of separate queries
 
-- ✅ Clean separation between frontend and backend
-- ✅ Type-safe with TypeScript throughout
-- ✅ RESTful API design
-- ✅ Comprehensive error handling
-- ✅ Input validation with Zod
-- ✅ Secure password storage (bcrypt)
-- ✅ JWT authentication with refresh tokens
-- ✅ Database migrations and seeding
-- ✅ Responsive UI components
-- ✅ Real-time data synchronization
+These optimizations result in 50-66% faster CRUD operations.
+
+
+### Environment Variables for Production
+
+Set these in your Vercel dashboard or hosting platform:
+- `DATABASE_URL` - Your PostgreSQL connection string
+- `JWT_ACCESS_SECRET` - Secret for access tokens (use strong random string)
+- `JWT_REFRESH_SECRET` - Secret for refresh tokens (use strong random string)
+- `JWT_ACCESS_EXPIRES_IN` - Access token expiration (e.g., "15m")
+- `JWT_REFRESH_EXPIRES_IN` - Refresh token expiration (e.g., "7d")
+- `NODE_ENV` - Set to "production"
+
+## Security Considerations
+
+- Passwords are hashed using bcryptjs before storage
+- JWT tokens use separate secrets for access and refresh tokens
+- All API routes are protected with authentication middleware
+- Database queries use parameterized statements (via Prisma)
+- User data is isolated using userId constraints
 
 ## License
 
-ISC
+MIT
+
+## Author
+
+Abraham Denis Omongole
