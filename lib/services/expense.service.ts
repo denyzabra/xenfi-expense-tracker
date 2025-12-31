@@ -3,7 +3,12 @@ import { AppError } from '@/lib/utils/errors';
 import type { CreateExpenseInput, UpdateExpenseInput, FilterExpensesInput } from '@/lib/validators/expense.validator';
 
 export const getAllExpenses = async (userId: string, filters?: FilterExpensesInput) => {
-  const where: any = { userId };
+  const where: {
+    userId: string;
+    categoryId?: string;
+    date?: { gte?: Date; lte?: Date };
+    amount?: { gte?: number; lte?: number };
+  } = { userId };
 
   if (filters?.categoryId) {
     where.categoryId = filters.categoryId;
@@ -65,9 +70,9 @@ export const createExpense = async (data: CreateExpenseInput, userId: string) =>
         category: true,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Foreign key constraint will fail if category doesn't exist or doesn't belong to user
-    if (error.code === 'P2003') {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'P2003') {
       throw new AppError(404, 'Category not found');
     }
     throw error;
@@ -91,13 +96,13 @@ export const updateExpense = async (id: string, data: UpdateExpenseInput, userId
         category: true,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     // P2025: Record not found (expense doesn't exist or doesn't belong to user)
-    if (error.code === 'P2025') {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'P2025') {
       throw new AppError(404, 'Expense not found');
     }
     // P2003: Foreign key constraint failed (invalid category)
-    if (error.code === 'P2003') {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'P2003') {
       throw new AppError(404, 'Category not found');
     }
     throw error;
@@ -113,9 +118,9 @@ export const deleteExpense = async (id: string, userId: string) => {
         userId, // Ensures user can only delete their own expenses
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     // P2025: Record not found (expense doesn't exist or doesn't belong to user)
-    if (error.code === 'P2025') {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'P2025') {
       throw new AppError(404, 'Expense not found');
     }
     throw error;

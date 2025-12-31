@@ -1,4 +1,4 @@
-import jwt, { type SignOptions } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 export interface JwtPayload {
   userId: string;

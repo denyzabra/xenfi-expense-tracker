@@ -32,10 +32,10 @@ export async function POST(req: NextRequest) {
     });
 
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     const errorResponse = handleApiError(error);
     return NextResponse.json(errorResponse, {
-      status: error.statusCode || 401
+      status: (error as { statusCode?: number }).statusCode || 401
     });
   }
 }

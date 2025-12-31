@@ -19,8 +19,8 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
-    } catch (err: any) {
-      setError(err.message || 'Failed to login');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to login');
     } finally {
       setLoading(false);
     }
@@ -54,7 +54,7 @@ export default function LoginPage() {
               <span className="text-primary">Simplified.</span>
             </h2>
             <p className="text-text-secondary text-lg leading-relaxed">
-              Track expenses, analyze spending patterns, and take control of your financial future with XenFi's powerful analytics.
+              Track expenses, analyze spending patterns, and take control of your financial future with XenFi&apos;s powerful analytics.
             </p>
           </div>
 
@@ -175,7 +175,7 @@ export default function LoginPage() {
 
             <div className="mt-6 pt-6 border-t border-border-dark">
               <p className="text-center text-sm text-text-secondary">
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <Link
                   href="/signup"
                   className="text-primary hover:text-primary-hover font-bold transition-colors"

@@ -20,8 +20,8 @@ export default function SignupPage() {
 
     try {
       await signup(email, password, name);
-    } catch (err: any) {
-      setError(err.message || 'Failed to sign up');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to sign up');
     } finally {
       setLoading(false);
     }
@@ -55,7 +55,7 @@ export default function SignupPage() {
               <span className="text-primary">Financial Journey</span>
             </h2>
             <p className="text-text-secondary text-lg leading-relaxed">
-              Join thousands of users who are already managing their expenses smarter with XenFi's intuitive platform.
+              Join thousands of users who are already managing their expenses smarter with XenFi&apos;s intuitive platform.
             </p>
           </div>
 

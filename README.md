@@ -248,4 +248,4 @@ MIT
 
 ## Author
 
-Abraham Denis Omongole
+Abraham Denis Omongole | denyzabrahams02@gmail.com

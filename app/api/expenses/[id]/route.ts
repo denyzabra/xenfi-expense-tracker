@@ -17,10 +17,10 @@ export async function GET(
         status: 'success',
         data: { expense },
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorResponse = handleApiError(error);
       return NextResponse.json(errorResponse, {
-        status: error.statusCode || 500
+        status: (error as { statusCode?: number }).statusCode || 500
       });
     }
   });
@@ -41,10 +41,10 @@ export async function PUT(
         status: 'success',
         data: { expense },
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorResponse = handleApiError(error);
       return NextResponse.json(errorResponse, {
-        status: error.statusCode || 500
+        status: (error as { statusCode?: number }).statusCode || 500
       });
     }
   });
@@ -63,10 +63,10 @@ export async function DELETE(
         status: 'success',
         data: { message: 'Expense deleted successfully' },
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorResponse = handleApiError(error);
       return NextResponse.json(errorResponse, {
-        status: error.statusCode || 500
+        status: (error as { statusCode?: number }).statusCode || 500
       });
     }
   });

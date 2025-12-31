@@ -12,23 +12,22 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
   const { isModalOpen, closeModal, editingTransaction } = useTransactionModal();
   const { showToast } = useToast();
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchCategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchCategories = async () => {
     try {
       const response = await api.get<{ status: string; data: { categories: Category[] } }>('/categories');
       setCategories(response.data.categories);
-    } catch (error) {
+    } catch {
       showToast('Failed to load categories', 'error');
     }
   };
 
   const handleSaveTransaction = async (transaction: Omit<Transaction, 'id'> & { id?: string }) => {
-    setLoading(true);
     try {
       if (transaction.id) {
         await api.put(`/expenses/${transaction.id}`, transaction);
@@ -39,10 +38,8 @@ function DashboardContent({ children }: { children: React.ReactNode }) {
       }
       closeModal();
       setTimeout(() => window.location.reload(), 500);
-    } catch (error: any) {
-      showToast(error.message || 'Failed to save expense', 'error');
-    } finally {
-      setLoading(false);
+    } catch (error: unknown) {
+      showToast(error instanceof Error ? error.message : 'Failed to save expense', 'error');
     }
   };
 

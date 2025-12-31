@@ -5,7 +5,7 @@ import { Search, Menu, X, Plus, LogOut } from 'lucide-react';
 import { NAV_ITEMS } from '@/lib/constants';
 import { useAuth } from '@/components/providers/AuthProvider';
 import { useTransactionModal } from '@/components/providers/TransactionModalProvider';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 interface LayoutProps {
@@ -18,7 +18,6 @@ const Layout: React.FC<LayoutProps> = ({ children, isRefreshing = false }) => {
   const { user, logout } = useAuth();
   const { openModal } = useTransactionModal();
   const pathname = usePathname();
-  const router = useRouter();
 
   const handleLogout = async () => {
     if (confirm('Are you sure you want to logout?')) {

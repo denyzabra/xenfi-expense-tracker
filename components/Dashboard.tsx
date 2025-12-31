@@ -2,8 +2,6 @@
 
 import React, { useMemo, useState, useEffect } from 'react';
 import {
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -15,7 +13,7 @@ import {
   Pie,
   Cell
 } from 'recharts';
-import { TrendingUp, TrendingDown, DollarSign, Activity, AlertCircle, Zap, Calendar } from 'lucide-react';
+import { TrendingDown, DollarSign, Activity, Zap, Calendar } from 'lucide-react';
 import { Transaction, TransactionType, Category } from '@/types';
 import { useAuth } from '@/components/providers/AuthProvider';
 
@@ -29,7 +27,9 @@ const Dashboard: React.FC<DashboardProps> = ({ transactions, categories }) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    // Use a timeout to avoid synchronous state update in effect
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
   }, []);
 
   // Get time-based greeting
@@ -114,7 +114,7 @@ const Dashboard: React.FC<DashboardProps> = ({ transactions, categories }) => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Financial Overview</h1>
-          <p className="text-text-secondary mt-1">{getGreeting()}, {user?.name || 'User'}. Here's what's happening with your accounts.</p>
+          <p className="text-text-secondary mt-1">{getGreeting()}, {user?.name || 'User'}. Here&apos;s what&apos;s happening with your accounts.</p>
         </div>
         <div className="flex items-center gap-3">
            <div className="flex items-center gap-2 text-xs font-medium bg-card-dark border border-border-dark px-3 py-1.5 rounded-lg text-text-secondary">

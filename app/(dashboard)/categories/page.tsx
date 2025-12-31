@@ -32,13 +32,14 @@ export default function CategoriesPage() {
       return;
     }
     fetchCategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   const fetchCategories = async () => {
     try {
       const response = await api.get<{ status: string; data: { categories: Category[] } }>('/categories');
       setCategories(response.data.categories);
-    } catch (error) {
+    } catch {
       showToast('Failed to load categories', 'error');
     } finally {
       setLoading(false);
@@ -78,8 +79,8 @@ export default function CategoriesPage() {
       }
       handleCloseModal();
       fetchCategories();
-    } catch (error: any) {
-      showToast(error.message || 'Failed to save category', 'error');
+    } catch (error: unknown) {
+      showToast(error instanceof Error ? error.message : 'Failed to save category', 'error');
     }
   };
 
@@ -90,8 +91,8 @@ export default function CategoriesPage() {
       showToast('Category deleted successfully!', 'success');
       setDeleteConfirm({ show: false, category: null });
       fetchCategories();
-    } catch (error: any) {
-      showToast(error.message || 'Failed to delete category', 'error');
+    } catch (error: unknown) {
+      showToast(error instanceof Error ? error.message : 'Failed to delete category', 'error');
     }
   };
 

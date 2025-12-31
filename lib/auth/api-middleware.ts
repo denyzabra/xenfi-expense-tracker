@@ -19,9 +19,9 @@ export async function withAuth(
     const decoded = verifyAccessToken(token);
 
     return await handler(req, decoded);
-  } catch (error: any) {
+  } catch (error: unknown) {
     return NextResponse.json(
-      { status: 'error', message: error.message || 'Invalid token' },
+      { status: 'error', message: error instanceof Error ? error.message : 'Invalid token' },
       { status: 401 }
     );
   }

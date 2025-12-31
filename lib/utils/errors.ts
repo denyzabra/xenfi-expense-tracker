@@ -9,12 +9,12 @@ export class AppError extends Error {
   }
 }
 
-export function handleApiError(error: any) {
+export function handleApiError(error: unknown) {
   if (error instanceof AppError) {
     return { status: 'error', message: error.message };
   }
 
-  if (error.name === 'ZodError') {
+  if (error && typeof error === 'object' && 'name' in error && error.name === 'ZodError' && 'errors' in error) {
     return { status: 'error', message: 'Validation error', errors: error.errors };
   }
 

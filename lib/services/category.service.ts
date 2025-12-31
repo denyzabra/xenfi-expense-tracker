@@ -30,9 +30,9 @@ export const createCategory = async (data: CreateCategoryInput, userId: string) 
         userId,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     // P2002: Unique constraint violation (duplicate name for this user)
-    if (error.code === 'P2002') {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'P2002') {
       throw new AppError(409, 'Category with this name already exists');
     }
     throw error;
@@ -49,13 +49,13 @@ export const updateCategory = async (id: string, data: UpdateCategoryInput, user
       },
       data,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     // P2025: Record not found
-    if (error.code === 'P2025') {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'P2025') {
       throw new AppError(404, 'Category not found');
     }
     // P2002: Unique constraint violation (duplicate name for this user)
-    if (error.code === 'P2002') {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'P2002') {
       throw new AppError(409, 'Category with this name already exists');
     }
     throw error;
@@ -71,13 +71,13 @@ export const deleteCategory = async (id: string, userId: string) => {
         userId, // Ensures user can only delete their own categories
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     // P2025: Record not found
-    if (error.code === 'P2025') {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'P2025') {
       throw new AppError(404, 'Category not found');
     }
     // P2003: Foreign key constraint failed (category has associated expenses)
-    if (error.code === 'P2003') {
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'P2003') {
       throw new AppError(400, 'Cannot delete category with associated expenses');
     }
     throw error;

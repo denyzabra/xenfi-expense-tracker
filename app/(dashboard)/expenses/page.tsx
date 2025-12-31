@@ -87,9 +87,9 @@ export default function ExpensesPage() {
 
       await fetchData();
       closeModal();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error saving transaction:', error);
-      showToast(error.message || 'Failed to save expense. Please try again.', 'error');
+      showToast(error instanceof Error ? error.message : 'Failed to save expense. Please try again.', 'error');
     }
   };
 
@@ -109,9 +109,9 @@ export default function ExpensesPage() {
       showToast('Expense deleted successfully!', 'success');
       setDeleteConfirm({ show: false, transactionId: null });
       await fetchData();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error deleting transaction:', error);
-      showToast(error.message || 'Failed to delete expense. Please try again.', 'error');
+      showToast(error instanceof Error ? error.message : 'Failed to delete expense. Please try again.', 'error');
     }
   };
 

@@ -25,14 +25,28 @@ export default function HomePage() {
 
   const fetchData = async () => {
     try {
+      interface Expense {
+        id: string;
+        amount: number;
+        description: string;
+        date: string;
+        categoryId: string;
+        paymentMethod?: string;
+        attachmentUrl?: string;
+        userId: string;
+        createdAt: string;
+        updatedAt: string;
+      }
+
       const [expensesRes, categoriesRes] = await Promise.all([
-        api.get<{ status: string; data: { expenses: any[] } }>('/expenses'),
+        api.get<{ status: string; data: { expenses: Expense[] } }>('/expenses'),
         api.get<{ status: string; data: { categories: Category[] } }>('/categories'),
       ]);
 
       // Transform expenses to transactions
-      const transactionsData: Transaction[] = expensesRes.data.expenses.map((expense: any) => ({
+      const transactionsData: Transaction[] = expensesRes.data.expenses.map((expense) => ({
         ...expense,
+        paymentMethod: expense.paymentMethod || 'Cash',
         type: TransactionType.EXPENSE,
       }));
 

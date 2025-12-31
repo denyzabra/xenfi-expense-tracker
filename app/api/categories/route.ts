@@ -13,10 +13,10 @@ export async function GET(req: NextRequest) {
         status: 'success',
         data: { categories },
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorResponse = handleApiError(error);
       return NextResponse.json(errorResponse, {
-        status: error.statusCode || 500
+        status: (error as { statusCode?: number }).statusCode || 500
       });
     }
   });
@@ -33,10 +33,10 @@ export async function POST(req: NextRequest) {
         status: 'success',
         data: { category },
       }, { status: 201 });
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorResponse = handleApiError(error);
       return NextResponse.json(errorResponse, {
-        status: error.statusCode || 500
+        status: (error as { statusCode?: number }).statusCode || 500
       });
     }
   });

@@ -3,9 +3,6 @@ import { PrismaNeon } from '@prisma/adapter-neon';
 import { Pool, neonConfig } from '@neondatabase/serverless';
 import ws from 'ws';
 import bcrypt from 'bcryptjs';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL is not defined in environment variables');
@@ -14,7 +11,6 @@ if (!process.env.DATABASE_URL) {
 neonConfig.webSocketConstructor = ws;
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-// @ts-expect-error - Prisma adapter type compatibility issue
 const adapter = new PrismaNeon(pool);
 const prisma = new PrismaClient({ adapter });
 

@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const response = await api.get<{ status: string; data: { user: User } }>('/auth/me');
         setUser(response.data.user);
       }
-    } catch (error) {
+    } catch {
       localStorage.removeItem('accessToken');
       setUser(null);
     } finally {

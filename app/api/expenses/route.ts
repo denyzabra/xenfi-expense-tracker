@@ -23,10 +23,10 @@ export async function GET(req: NextRequest) {
         status: 'success',
         data: { expenses },
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorResponse = handleApiError(error);
       return NextResponse.json(errorResponse, {
-        status: error.statusCode || 500
+        status: (error as { statusCode?: number }).statusCode || 500
       });
     }
   });
@@ -43,10 +43,10 @@ export async function POST(req: NextRequest) {
         status: 'success',
         data: { expense },
       }, { status: 201 });
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorResponse = handleApiError(error);
       return NextResponse.json(errorResponse, {
-        status: error.statusCode || 500
+        status: (error as { statusCode?: number }).statusCode || 500
       });
     }
   });
